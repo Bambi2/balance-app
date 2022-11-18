@@ -1,0 +1,328 @@
+basePath: /
+definitions:
+  delivery.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  delivery.sendBalanceInput:
+    properties:
+      amount:
+        type: integer
+      recieverId:
+        type: integer
+      senderId:
+        type: integer
+    required:
+    - amount
+    - recieverId
+    - senderId
+    type: object
+  delivery.unreserveInput:
+    properties:
+      orderId:
+        type: integer
+      serviceId:
+        type: integer
+      userId:
+        type: integer
+    required:
+    - orderId
+    - serviceId
+    - userId
+    type: object
+  domain.Check:
+    properties:
+      amount:
+        type: integer
+      orderId:
+        type: integer
+      serviceId:
+        type: integer
+      userId:
+        type: integer
+    required:
+    - amount
+    - orderId
+    - serviceId
+    - userId
+    type: object
+  domain.Invoice:
+    properties:
+      amount:
+        type: integer
+      orderId:
+        type: integer
+      serviceId:
+        type: integer
+      userId:
+        type: integer
+    required:
+    - amount
+    - orderId
+    - serviceId
+    - userId
+    type: object
+  domain.Transaction:
+    properties:
+      description:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      amount:
+        type: integer
+      id:
+        type: integer
+    required:
+    - amount
+    - id
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: HTTP API Microservice for handling users' balance
+  title: Balance App API Miscroservice
+  version: "1.0"
+paths:
+  /api/balance:
+    post:
+      consumes:
+      - application/json
+      description: Add money to the balance of a user or create a new balance if he/she
+        doesn't exist yet
+      operationId: add-to-balance
+      parameters:
+      - description: money to add (in cents) and user id
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+      summary: Add To Balance
+      tags:
+      - balance
+  /api/balance/{userId}:
+    get:
+      consumes:
+      - '*/*'
+      description: Get balance of a specified user (in cents)
+      operationId: get-balance
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+      summary: Get Balance
+      tags:
+      - balance
+  /api/balance/send:
+    post:
+      consumes:
+      - application/json
+      description: Make a transaction between users
+      operationId: send-money
+      parameters:
+      - description: information about the transaction between users
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/delivery.sendBalanceInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+      summary: Send Money From Another User
+      tags:
+      - balance
+  /api/check:
+    post:
+      consumes:
+      - application/json
+      description: Check an invoice
+      operationId: check
+      parameters:
+      - description: invoice info and amount (in cents) to check
+        in: body
+        name: check
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Check'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+      summary: Check Invoice
+      tags:
+      - check
+  /api/reserve:
+    post:
+      consumes:
+      - application/json
+      description: Reserve user's money for a service
+      operationId: reserve
+      parameters:
+      - description: user id and invoice info
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Invoice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+      summary: Reserve Money
+      tags:
+      - reservation
+  /api/reserve/{userId}/{limit}/{offset}:
+    get:
+      consumes:
+      - '*/*'
+      description: Get user's transactions ordered by date and amount (pagination
+        included)
+      operationId: get-transactions
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Transaction'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+      summary: Get Transactions
+      tags:
+      - transactions
+  /api/unreserve:
+    post:
+      consumes:
+      - application/json
+      description: Unreserve user's money for a service if the service isn't aplied
+        yet
+      operationId: unreserve
+      parameters:
+      - description: user id and invoice info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/delivery.unreserveInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.errorResponse'
+      summary: Unreserve Money
+      tags:
+      - reservation
+schemes:
+- http
+swagger: "2.0"

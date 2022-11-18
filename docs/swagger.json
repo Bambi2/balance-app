@@ -1,0 +1,485 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "HTTP API Microservice for handling users' balance",
+        "title": "Balance App API Miscroservice",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/api/balance": {
+            "post": {
+                "description": "Add money to the balance of a user or create a new balance if he/she doesn't exist yet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "balance"
+                ],
+                "summary": "Add To Balance",
+                "operationId": "add-to-balance",
+                "parameters": [
+                    {
+                        "description": "money to add (in cents) and user id",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/send": {
+            "post": {
+                "description": "Make a transaction between users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "balance"
+                ],
+                "summary": "Send Money From Another User",
+                "operationId": "send-money",
+                "parameters": [
+                    {
+                        "description": "information about the transaction between users",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/delivery.sendBalanceInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/balance/{userId}": {
+            "get": {
+                "description": "Get balance of a specified user (in cents)",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "balance"
+                ],
+                "summary": "Get Balance",
+                "operationId": "get-balance",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/check": {
+            "post": {
+                "description": "Check an invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "check"
+                ],
+                "summary": "Check Invoice",
+                "operationId": "check",
+                "parameters": [
+                    {
+                        "description": "invoice info and amount (in cents) to check",
+                        "name": "check",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Check"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reserve": {
+            "post": {
+                "description": "Reserve user's money for a service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Reserve Money",
+                "operationId": "reserve",
+                "parameters": [
+                    {
+                        "description": "user id and invoice info",
+                        "name": "invoice",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Invoice"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reserve/{userId}/{limit}/{offset}": {
+            "get": {
+                "description": "Get user's transactions ordered by date and amount (pagination included)",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transactions"
+                ],
+                "summary": "Get Transactions",
+                "operationId": "get-transactions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Transaction"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/unreserve": {
+            "post": {
+                "description": "Unreserve user's money for a service if the service isn't aplied yet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reservation"
+                ],
+                "summary": "Unreserve Money",
+                "operationId": "unreserve",
+                "parameters": [
+                    {
+                        "description": "user id and invoice info",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/delivery.unreserveInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.errorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "delivery.errorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "delivery.sendBalanceInput": {
+            "type": "object",
+            "required": [
+                "amount",
+                "recieverId",
+                "senderId"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "recieverId": {
+                    "type": "integer"
+                },
+                "senderId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "delivery.unreserveInput": {
+            "type": "object",
+            "required": [
+                "orderId",
+                "serviceId",
+                "userId"
+            ],
+            "properties": {
+                "orderId": {
+                    "type": "integer"
+                },
+                "serviceId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Check": {
+            "type": "object",
+            "required": [
+                "amount",
+                "orderId",
+                "serviceId",
+                "userId"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "orderId": {
+                    "type": "integer"
+                },
+                "serviceId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Invoice": {
+            "type": "object",
+            "required": [
+                "amount",
+                "orderId",
+                "serviceId",
+                "userId"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "orderId": {
+                    "type": "integer"
+                },
+                "serviceId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Transaction": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.User": {
+            "type": "object",
+            "required": [
+                "amount",
+                "id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

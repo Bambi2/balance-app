@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  balance-app:
+    build: ./
+    command: ./wait-for-postgres.sh db ./balance-app
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=qwerty
+      - CLOUDINARY_URL=cloudinary://574157237695355:Rlqpq-vp7riP4ENELF4LlotkFZI@dmikwph5n
+  db:
+    image: postgres:latest
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_PASSWORD=qwerty
+    ports:
+      - 5436:5432
