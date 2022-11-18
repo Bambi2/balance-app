@@ -30,8 +30,9 @@ make build && make run
 <img width="1222" alt="image" src="https://user-images.githubusercontent.com/53175260/202733531-7b3ccc26-e455-4d4a-89d1-45a07c01708a.png">
 
 ### Метод для получения месячного отчета для бухгалтерии в CSV формате (на вход год и месяц), использовал сервис cloudinary
-<img width="1223" alt="image" src="https://user-images.githubusercontent.com/53175260/202738226-2b045952-b3ac-495d-960a-2835a59c7f29.png">
-<img width="1226" alt="image" src="https://user-images.githubusercontent.com/53175260/202738294-6ecf5d5a-ebe5-4a76-91d2-a6e59d13a06c.png">
+<img width="1223" alt="image" src="https://user-images.githubusercontent.com/53175260/202747962-624599b7-0fc0-427e-a6cd-6f95fb6f5e3e.png">
+<img width="1227" alt="image" src="https://user-images.githubusercontent.com/53175260/202748122-e91859c6-b70b-429d-8f3e-943896ed8422.png">
+
 
 ### Метод для перечисления денег между пользователями
 <img width="1226" alt="image" src="https://user-images.githubusercontent.com/53175260/202738896-f0bd09d0-78be-402a-b9d3-51a1cb627398.png">
