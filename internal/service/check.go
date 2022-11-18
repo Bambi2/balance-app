@@ -65,7 +65,7 @@ func (s *CheckService) GetCSVChecks(year string, month string) (*os.File, error)
 	}
 
 	// formating data for csv file
-	var finalChecks [][]string = make([][]string, len(checksSorted))
+	var finalChecks [][]string = make([][]string, 0, len(checksSorted))
 	for key, val := range checksSorted {
 		finalChecks = append(finalChecks, []string{strconv.Itoa(key), strconv.Itoa(int(val))})
 	}
