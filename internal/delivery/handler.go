@@ -32,7 +32,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.POST("/reserve", h.Reserve)
 		api.POST("/unreserve", h.Unreserve)
 		api.POST("/check", h.Check)
-		api.GET("/checks:year/:month", h.GetChecks)
+		api.GET("/checks/:year/:month", h.GetChecks)
 	}
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
